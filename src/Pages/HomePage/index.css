@@ -2,3 +2,18 @@
 	font-family: 'Monoton', cursive;
 	font-size: 96px;
 }
+
+.sub-title{
+	line-height: 24px;
+	letter-spacing: 3px !important;
+}
+
+.phone-style{
+	width: 246px;
+	height: 246px;
+}
+
+.title-text{
+	font-family: 'Open Sans';
+	font-size: 28px;
+}

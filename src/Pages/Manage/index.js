@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import SimpleMap from '../../Components/Map'
 import './index.css'
+const CONST = require('../../constant.js')
 
 class Manage extends Component {
   constructor(props){
@@ -12,23 +13,21 @@ class Manage extends Component {
     }
     this.getDriver = this.getDriver.bind(this)
   }
+
   componentDidMount() {
-    // setInterval(() => this.getDriver(tmp_driver) , 1000)
-    this.getDriver(tmp_driver)
+    axios.get(`${CONST.SERVER_URL}/manage`)
+    .then(res => this.getDriver(res.data.drivers))
+    .catch(err => console.log(err))
+
+    // this.getDriver(tmp_driver)
   }
+
   getDriver(drivers) {
-    console.log(drivers)
-    this.setState({
-      driverList: drivers
-    })
-  
-    // axios.get("https://www.dcard.tw/_api/forums/game/posts?popular=false&limit=30")
-    // .then((res) => console.log(res))
-    // .catch((err) => console.log(err))
+    this.setState({ driverList: drivers })
   }
   render() {
     return (
-      <div className="container">
+      <div className="container mt-3">
         <div className="row mapFrame text-center align-items-center">
           <SimpleMap />
         </div>
@@ -37,10 +36,9 @@ class Manage extends Component {
           {
             this.state.driverList && this.state.driverList.map(
               (driver) => 
-                <div key={driver.id} className="card-custom align-self-start col mr-3 row" style={{width: "18rem"}}>
-                  <div className="card-body col">
+                <div key={driver.driverID} className="card-custom align-self-start col mr-3" style={{width: "18rem"}}>
+                  <div className="card-body">
                     <h5 className="card-title">{driver.name}</h5>
-                    <h5 className="card-title">運送狀態：{driver.status}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">Driver Information</h6>            
                   </div>
                 </div>
@@ -55,21 +53,21 @@ class Manage extends Component {
 
 export default Manage;
 
-const tmp_driver = 
-[
-  {
-    id: 1,
-    name: "John",
-    status: 1,
-    lat: 24.783969,
-    lng: 120.996222
-  },
-  {
-    id: 2,
-    name: "Uber",
-    status: 1,
-    lat: 24.784553,
-    lng: 120.999526
-  },
-]
+// const tmp_driver = 
+// [
+//   {
+//     driverID: 1,
+//     name: "John",
+//     status: 1,
+//     lat: 24.783969,
+//     lng: 120.996222
+//   },
+//   {
+//     driverId: 2,
+//     name: "Uber",
+//     status: 1,
+//     lat: 24.784553,
+//     lng: 120.999526
+//   },
+// ]
 

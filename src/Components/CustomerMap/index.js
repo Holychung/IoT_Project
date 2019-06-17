@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+
 import GoogleMap from 'google-map-react';
 
 import './index.css'
@@ -7,6 +7,12 @@ import './index.css'
 const AnyReactComponent = ({ text }) => (
   <div>
     <i style={{color: "#DD4B3E"}} className="fas fa-truck fa-2x"></i>
+  </div>
+)
+
+const CustomerComponent = ({ text }) => (
+  <div>
+    <i style={{color: "#4285F4"}} className="fas fa-male fa-3x"></i>
   </div>
 )
 
@@ -19,7 +25,7 @@ class CustomerMap extends Component {
         lat: 0,
         lng: 0
       },
-      zoom: 8.5,
+      zoom: 16,
     }
     this.calculateCenter = this.calculateCenter.bind(this)
   }
@@ -27,42 +33,18 @@ class CustomerMap extends Component {
     this.calculateCenter()
   }
   calculateCenter() {
-    console.log(this.props)
     let centerObj = {}
     centerObj['lat'] = (this.props.customerAddress.lat + this.props.driverAddress.lat) / 2
     centerObj['lng'] = (this.props.customerAddress.lng + this.props.driverAddress.lng) / 2
     
-    this.setState({
-      center:  centerObj
-    })
+    this.setState({ center:  centerObj })
   }
   
   render() {
     let props = this.props
-    console.log(props)
+    
     return (
-      
-      <div className="map" style={{ height: '60vh', width: '100%' }}>
-        {/*
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyBqb3GaYtbCdOMqq4ZAexpda3D3BD7WzII"}}
-          center={this.state.center}
-          defaultZoom={this.state.zoom}
-          
-        >
-          <AnyReactComponent 
-            text="a"
-            lat={props.customerAddress.lat}
-            lng={props.customerAddress.lng}
-          />
-          <AnyReactComponent 
-            lat={props.driverAddress.lat}
-            lng={props.driverAddress.lng}
-          />
-        </GoogleMapReact>
-        
-        */}
-
+      <div className="map">
         <GoogleMap
           bootstrapURLKeys={{
             key: "AIzaSyBqb3GaYtbCdOMqq4ZAexpda3D3BD7WzII",
@@ -74,7 +56,7 @@ class CustomerMap extends Component {
           // options={this.createMapOptions}>
 
         >
-          <AnyReactComponent 
+          <CustomerComponent 
             lat={props.customerAddress.lat}
             lng={props.customerAddress.lng}
           />
@@ -85,13 +67,7 @@ class CustomerMap extends Component {
           />
 
         </GoogleMap>
-        
-        
-
-
-        
       </div>
-      
     );
   }
 }

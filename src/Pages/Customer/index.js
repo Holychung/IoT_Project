@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import CustomerMap from '../../Components/CustomerMap'
 import './index.css'
 
 import logo from '../../img/logo1.png';
 
+const CONST = require('../../constant.js')
 const google = window.google
 
 class Customer extends Component {
@@ -26,26 +28,37 @@ class Customer extends Component {
   }
   componentDidMount() {
     let uid = this.props.match.params.id
-    // axios
-    // axios.get(`/customer/${uid}`)
-    // .then(res => console.log(res))
-    // .catch(err => console.log(err))
-
-    this.getRoute(tmp_route)
+    
+    setInterval(() => 
+      axios.get(`${CONST.CUSTOMER_URL}/order/?uid=${uid}`)
+      .then(res => this.getRoute(res))
+      .catch(err => console.log(err))
+    , 3000)
+    
+    // this.getRoute(tmp_route)
   }
-  getRoute(route) {
-    this.setState({
-      routeInfo: route
-    })
+  getRoute(response) {
+    if(Object.keys(response).length === 0){
+      console.log('Nothing')
+    } else {
 
-    if(route[0].order.status === 0){
-      this.setState({ isHouse: true })
-    } else if(route[0].order.status === 1){
-      this.setState({ isBoard: true })
-      // Cautious! Now is Array type
-      this.getDistanceMatrix(route[0].customerAddress, route[0].driverAddress)
-    } else if(route[0].order.status === -1){
-      this.setState({ isDone: true })
+      let cAddress = response.data.order[0].customerAddress
+      let dAddress = response.data.driverAddress
+      let order_status = response.data.order[0].status
+      let routeInfo = response.data.order // Array type 
+      routeInfo[0]['driverAddress'] = dAddress
+      console.log(dAddress)
+
+      this.setState({ routeInfo: routeInfo })
+
+      if(order_status === 0){
+        this.setState({ isHouse: true })
+      } else if(order_status === 1){
+        this.setState({ isBoard: true })
+        this.getDistanceMatrix(cAddress, dAddress)
+      } else if(order_status === -1){
+        this.setState({ isDone: true })
+      }
     }
     
   }
@@ -84,32 +97,34 @@ class Customer extends Component {
       <div>
         <NavBar />
         <div className="container mt-3">
-          <div className="row">
-            <div className="col-6 mapFrame text-center align-items-center">
+          <div className="col">
+            <div className=" mapFrame text-center align-items-center">
               {
                 this.state.isBoard === true ?
                   <CustomerMap  
                     customerAddress={this.state.routeInfo[0].customerAddress}
                     driverAddress={this.state.routeInfo[0].driverAddress}
-                />
+                  />
                 : this.state.isHouse === true ? 
                   <h2 className="textCenter text-muted my-auto">尚未出貨！</h2>
-                : <h2 className="textCenter text-muted my-auto">已完成訂單！</h2>
+                : this.state.isDone === true ?
+                  <h2 className="textCenter text-muted my-auto">已完成訂單！</h2>
+                : <h2 className="textCenter text-muted my-auto">等待中...</h2>
+
               }
             
             </div>
 
-            <div className="col-5 ml-4">
+            <div className="col mt-3 px-0">
               {
-                this.state.routeInfo.length !== 0 ? 
-                  <div className="card col-9 mb-3 row" style={{width: "24rem"}}>
-                    <div className="card-body container">
-                      <h5 className="card-title">您的訂單：{this.state.routeInfo[0].order.id}</h5>
-                      <h5 className="card-title">運送狀態： {this.state.routeInfo[0].order.status} </h5> 
+                this.state.routeInfo.length === 1 ? 
+                  <div className="card col-12 mb-3" >
+                    <div className="card-body w-100">
+                      <h5 className="card-title">您的訂單：{this.state.routeInfo[0].id}</h5>
                       <h6 className="card-subtitle mb-2 text-muted">預估剩餘時間：{this.state.estimateTime}</h6>
                       <h6 className="card-subtitle mb-2 text-muted">預估距離：{this.state.estimateDistance}</h6>
                       {
-                        this.state.routeInfo[0].order.itemList.map((item) => (
+                        this.state.routeInfo[0].itemList.map((item) => (
                           <div key={item.id} className="row justify-content-center">
                             <div className="col">
                               {item.name} 
@@ -121,12 +136,11 @@ class Customer extends Component {
                         ))
                       }
                       
-                      <h5 className="card-title text-right">總計: NT${this.state.routeInfo[0].order.total_price}</h5>
-                      <a href="#" className="card-link">More Information</a>
+                      <h5 className="card-title text-right">總計: NT${this.state.routeInfo[0].total_price}</h5>
                     </div>
                   </div>
                   :
-                  <div>Yeeee Nothing</div>
+                  <div></div>
               }
             </div>
           </div>
@@ -147,40 +161,40 @@ const NavBar = () => (
   </div>
 )
 
-const tmp_route = 
-[
-  {
-    id: 1,
-    customerAddress: {
-      "lat": 24.7838,
-      "lng": 120.9962
-    },
-    driverAddress: {
-      "lat": 24.178800,
-      "lng": 120.646493
-    },
-    name: "John",
+// const tmp_route = 
+// [
+//   {
+//     id: 1,
+//     customerAddress: {
+//       "lat": 24.7838,
+//       "lng": 120.9962
+//     },
+//     driverAddress: {
+//       "lat": 24.178800,
+//       "lng": 120.646493
+//     },
+//     name: "John",
     
-    order: 
-    {
-      id: "F921D",
-      status: 1,
-      driver: "John",
-      total_price: "120",
-      itemList: [
-        {
-          id: 1,
-          name: "蔬菜薯餅吐司 Hash Brown Toast",
-          price: "50",
-          itemCount: 2
-        },
-        {
-          id: 3,
-          name: "奶茶 Milk Tea",
-          price: "20",
-          itemCount: 1
-        },
-      ]
-    },
-  }
-]
+//     order: 
+//     {
+//       id: "F921D",
+//       status: 1,
+//       driver: "John",
+//       total_price: "120",
+//       itemList: [
+//         {
+//           id: 1,
+//           name: "蔬菜薯餅吐司 Hash Brown Toast",
+//           price: "50",
+//           itemCount: 2
+//         },
+//         {
+//           id: 3,
+//           name: "奶茶 Milk Tea",
+//           price: "20",
+//           itemCount: 1
+//         },
+//       ]
+//     },
+//   }
+// ]
