@@ -1,0 +1,66 @@
+.numItem{
+	/*border: 1px solid #A9A9A9;*/
+	margin-right: 3px;
+	padding: 3px;
+	font-size: 14px;
+}
+.table{
+	/*border-collapse: separate;*/
+	/*border-radius: 10px !important;*/
+}
+
+.thead-white{
+	background-color: white;
+}
+
+.tbody-white{
+	background-color: white;
+}
+
+.table-title{
+	border-collapse: separate !important;
+	border-radius: 5px;
+}
+
+td:first-child{
+	border-collapse: separate;
+ 	border-radius: 5px;
+}
+
+td:last-child{
+	border-collapse: separate;
+ 	border-radius: 5px;
+}
+
+
+.btn-custom{
+	display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+.btn-depart{
+	font-family: 'Open Sans',"微軟正黑體";
+	color: white;
+	background-color: rgb(157, 195, 230);
+}
+.btn-done{
+	font-family: 'Open Sans',"微軟正黑體";
+	color: white;
+	background-color: rgb(169, 209, 142);
+}
+.btn-no{
+	font-family: 'Open Sans',"微軟正黑體";
+	color: white;
+	background-color: rgb(191, 191, 191);
+}

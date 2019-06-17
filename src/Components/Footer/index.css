@@ -1,0 +1,19 @@
+.footer{
+	position: fixed;
+ 	left: 0;
+  	bottom: 0;
+ 
+	height: 50px;
+    background: #000;
+    width: 100%;
+    line-height: 50px;
+    color: white;
+    text-align: center;
+    z-index: 10;
+    margin-top: -50px;
+}
+
+.fb-icon{
+	margin-left: 15px;
+	line-height: 50px;
+}
