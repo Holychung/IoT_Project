@@ -48,6 +48,7 @@ class Customer extends Component {
       let routeInfo = response.data.order // Array type 
       routeInfo[0]['driverAddress'] = dAddress
       console.log(dAddress)
+      // console.log(routeInfo[0])
 
       this.setState({ routeInfo: routeInfo })
 
@@ -96,9 +97,9 @@ class Customer extends Component {
     return (
       <div>
         <NavBar />
-        <div className="container mt-3">
+        <div className="container">
           <div className="col">
-            <div className=" mapFrame text-center align-items-center">
+            <div className="mapFrame text-center align-items-center">
               {
                 this.state.isBoard === true ?
                   <CustomerMap  
@@ -155,8 +156,10 @@ export default Customer;
 
 const NavBar = () => (
   <div>
-    <ul className="nav justify-content-start align-items-center p-3">
-      <img src={logo} alt="Logo" className="align-self-start" style={{ height: '10%', width: '10%' }}/>
+    <ul className="nav justify-content-start align-items-center p-3 row">
+      <div className="col" />
+      <img src={logo} alt="Logo" className="align-self-center col custom-logo" />
+      <div className="col" />
     </ul>
   </div>
 )

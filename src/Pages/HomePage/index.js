@@ -35,7 +35,6 @@ class HomePage extends Component {
           <img src={img_phone} 
             className="col phone-style"
             alt="phone" 
-            // style={{ height: '50%', width: '50%' }}
           />
           <div className="col" />
         </div>

@@ -1,13 +1,13 @@
 .map{
 	margin: 0px !important;
-	height: '60vh';
+	height: 500px;
 	width: '100%';
 }
 
-@media handheld and (max-width: 500px){
+@media (max-width:990px){
   .map
   {
-    height: '40vh';
+    height: 450px;
     width: '100%';
   }
 }
